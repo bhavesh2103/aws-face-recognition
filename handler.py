@@ -3,8 +3,6 @@ import pickle
 import os
 import subprocess
 import boto3
-import numpy as np
-import json
 import logging
 
 logger = logging.getLogger()
@@ -108,43 +106,43 @@ def face_recognition_handler(event, context):
         raise e
 
 
-if __name__ == '__main__':
-    event = {
-        "Records": [
-            {
-                "eventVersion": "2.1",
-                "eventSource": "aws:s3",
-                "awsRegion": "us-east-1",
-                "eventTime": "2023-10-21T06:32:01.378Z",
-                "eventName": "ObjectCreated:Put",
-                "userIdentity": {
-                    "principalId": "A2UJIRMU9PGJGP"
-                },
-                "requestParameters": {
-                    "sourceIPAddress": "72.201.57.106"
-                },
-                "responseElements": {
-                    "x-amz-request-id": "RQPX9N2KAS9XEDSM",
-                    "x-amz-id-2": "SfMX+LhadYEOTOU5BnmDyTxe/w/ZgOH0RnvL6ccnz0AngKNgVzgf7/JGVL9kCuPv7QGfSgLxuQm1M0CQ3f0GSjtkEJY1ORkZ2fBUyoGzZJc="
-                },
-                "s3": {
-                    "s3SchemaVersion": "1.0",
-                    "configurationId": "c9361b17-de7b-4df9-b9fa-2193e28a4f41",
-                    "bucket": {
-                        "name": "cc-ss-input-2",
-                        "ownerIdentity": {
-                            "principalId": "A2UJIRMU9PGJGP"
-                        },
-                        "arn": "arn:aws:s3:::cc-ss-input-2"
-                    },
-                    "object": {
-                        "key": "raw/test_8.mp4",
-                        "size": 624083,
-                        "eTag": "1c6a7147ac6d63f70b0fb8fd4d691e72",
-                        "sequencer": "0065337061452A496C"
-                    }
-                }
-            }
-        ]
-    }
-    print(face_recognition_handler(event, []))
+# if __name__ == '__main__':
+#     event = {
+#         "Records": [
+#             {
+#                 "eventVersion": "2.1",
+#                 "eventSource": "aws:s3",
+#                 "awsRegion": "us-east-1",
+#                 "eventTime": "2023-10-21T06:32:01.378Z",
+#                 "eventName": "ObjectCreated:Put",
+#                 "userIdentity": {
+#                     "principalId": "A2UJIRMU9PGJGP"
+#                 },
+#                 "requestParameters": {
+#                     "sourceIPAddress": "72.201.57.106"
+#                 },
+#                 "responseElements": {
+#                     "x-amz-request-id": "RQPX9N2KAS9XEDSM",
+#                     "x-amz-id-2": "SfMX+LhadYEOTOU5BnmDyTxe/w/ZgOH0RnvL6ccnz0AngKNgVzgf7/JGVL9kCuPv7QGfSgLxuQm1M0CQ3f0GSjtkEJY1ORkZ2fBUyoGzZJc="
+#                 },
+#                 "s3": {
+#                     "s3SchemaVersion": "1.0",
+#                     "configurationId": "c9361b17-de7b-4df9-b9fa-2193e28a4f41",
+#                     "bucket": {
+#                         "name": "cc-ss-input-2",
+#                         "ownerIdentity": {
+#                             "principalId": "A2UJIRMU9PGJGP"
+#                         },
+#                         "arn": "arn:aws:s3:::cc-ss-input-2"
+#                     },
+#                     "object": {
+#                         "key": "raw/test_8.mp4",
+#                         "size": 624083,
+#                         "eTag": "1c6a7147ac6d63f70b0fb8fd4d691e72",
+#                         "sequencer": "0065337061452A496C"
+#                     }
+#                 }
+#             }
+#         ]
+#     }
+#     print(face_recognition_handler(event, []))

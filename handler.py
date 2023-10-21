@@ -12,9 +12,7 @@ input_bucket = "cc-ss-input-2"
 output_bucket = "cc-ss-output-2" #todo : create this bucket
 s3 = boto3.client('s3')
 file_path = '/home/app/encoding'
-
-
-# file_path = 'encoding'
+# file_path = 'encoding' #for local testing
 
 
 # Function to read the 'encoding' file

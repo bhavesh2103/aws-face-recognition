@@ -9,7 +9,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 input_bucket = "cc-ss-input-2"
-output_bucket = "cc-ss-output-2"
+output_bucket = "cc-ss-output-2" #todo : create this bucket
 s3 = boto3.client('s3')
 file_path = '/home/app/encoding'
 
@@ -26,10 +26,15 @@ def open_encoding(filename):
 
 
 def get_info_from_dynamo(name):
+    # todo : load data to ddb table with hash/pk = name
+    # get data from ddb and return it here as text/string
     pass
 
 
 def upload_file_to_s3(video_file_name, name_of_person_detected, information_from_dynamo):
+    # todo : create a file named video_file_name on s3
+    # contents for this file will be , name of the person detected, and inforamation_from_dynamo (string/text)
+    # check if file created successfully and return true if it does, else return false or raise error
     pass
 
 
@@ -83,7 +88,7 @@ def face_recognition_handler(event, context):
                 unknown_face_encoding = face_recognition.face_encodings(frame_image)
                 result = check_if_array_exists_in_list(unknown_face_encoding, encoding_values)
                 if result != -1:
-                    break;
+                    break
 
             if result != -1:
                 name_of_person_detected = encoding_names[result]

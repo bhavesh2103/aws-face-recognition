@@ -14,7 +14,6 @@ FROM python:${RUNTIME_VERSION} AS python-alpine
 
 RUN apt-get update \
     && apt-get install -y cmake ca-certificates libgl1-mesa-glx
-RUN apt-get install -y libjpeg-turbo8
 RUN apt-get install -y build-essential cmake pkg-config
 RUN apt-get install -y libx11-dev libatlas-base-dev
 RUN python${RUNTIME_VERSION} -m pip install --upgrade pip
@@ -61,6 +60,7 @@ RUN apt-get install -y ffmpeg
 
 # Copy handler function
 COPY requirements.txt ${FUNCTION_DIR}
+COPY encoding ${FUNCTION_DIR}
 RUN python${RUNTIME_VERSION} -m pip install -r requirements.txt --target ${FUNCTION_DIR}
 COPY entry.sh /
 

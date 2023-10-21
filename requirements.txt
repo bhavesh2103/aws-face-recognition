@@ -5,3 +5,4 @@ ffmpeg
 cmake
 dlib
 face_recognition
+urllib3

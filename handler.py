@@ -5,6 +5,9 @@ import subprocess
 import boto3
 import numpy as np
 import json
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 input_bucket = "cc-ss-input-2"
 output_bucket = "cc-ss-output-2"
@@ -22,7 +25,10 @@ def open_encoding(filename):
 
 def face_recognition_handler(event, context):
     try:
-        all_face_encodings = np.array(list(open_encoding(file_path).values()))
+        logger.info("Lambda function executed.")
+        all_face_encodings = open_encoding(file_path).values()
+        #print(all_face_encodings)
+        logger.info(all_face_encodings)
         for record in event['Records']:
 
             bucket = record['s3']['bucket']['name']
@@ -70,21 +76,18 @@ def face_recognition_handler(event, context):
             'body': 'Processing complete.'
         }
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': 'Processing Failed. Error : ' + str(e)
-        }
-if __name__ == '__main__':
-    event={
-        "Records" :{
-            "s3" : {
-                "bucket" : {
-                    "name" : "s3://cc-ss-input-2"
-                },
-                "object" : {
-                    "key" : "raw/test_0.mp4"
-                }
-            }
-        }
-    }
-    face_recognition_handler(event,[])
+        raise e
+# if __name__ == '__main__':
+#     event={
+#         "Records" :{
+#             "s3" : {
+#                 "bucket" : {
+#                     "name" : "s3://cc-ss-input-2"
+#                 },
+#                 "object" : {
+#                     "key" : "raw/test_0.mp4"
+#                 }
+#             }
+#         }
+#     }
+#     print(face_recognition_handler(event,[]))

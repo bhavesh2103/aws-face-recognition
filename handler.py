@@ -9,7 +9,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 input_bucket = "cc-ss-input-2"
-output_bucket = "cc-ss-output-2" #todo : create this bucket
+output_bucket = "cc-ss-output-2"
 s3 = boto3.client('s3')
 file_path = '/home/app/encoding'
 # file_path = 'encoding' #for local testing
@@ -23,10 +23,33 @@ def open_encoding(filename):
     return data
 
 
+table_name = 'cc-ss-proj2-table'
+
+
 def get_info_from_dynamo(name):
-    # todo : load data to ddb table with hash/pk = name
-    # get data from ddb and return it here as text/string
-    pass
+    # Initialize the DynamoDB client
+    dynamodb = boto3.client('dynamodb')
+
+    try:
+        # Query DynamoDB based on the provided 'name' as the partition key
+        response = dynamodb.get_item(
+            TableName=table_name,
+            Key={
+                'name': {'S': name}  # Assuming 'name' is the partition key
+            }
+        )
+
+        # Check if the item was found
+        if 'Item' in response:
+            # Get the item's data and convert it to a string
+            item = response['Item']
+
+            return item.items()
+        else:
+            return "Item not found in DynamoDB."
+
+    except Exception as e:
+        return str(e)  # Return the error message if an exception occurs
 
 
 def upload_file_to_s3(video_file_name, name_of_person_detected, information_from_dynamo):
@@ -82,15 +105,21 @@ def face_recognition_handler(event, context):
             result = None
 
             for frame_file in frame_files:
-                frame_image = face_recognition.load_image_file(os.path.join(frame_dir, frame_file))
-                unknown_face_encoding = face_recognition.face_encodings(frame_image)
-                result = check_if_array_exists_in_list(unknown_face_encoding, encoding_values)
+                frame_image = face_recognition.load_image_file(
+                    os.path.join(frame_dir, frame_file))
+                unknown_face_encoding = face_recognition.face_encodings(
+                    frame_image)
+                result = check_if_array_exists_in_list(
+                    unknown_face_encoding, encoding_values)
                 if result != -1:
                     break
 
             if result != -1:
                 name_of_person_detected = encoding_names[result]
-                print(f"First face detected for {key}! Name of the person identified is  : {name_of_person_detected}")
+                print(
+                    f"First face detected for {key}! Name of the person identified is  : {name_of_person_detected}")
+                info_from_ddb = get_info_from_dynamo(name_of_person_detected)
+                print(info_from_ddb)
                 # call get info from ddb
                 # call upload to s3
             else:

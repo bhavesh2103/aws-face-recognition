@@ -30,7 +30,7 @@ def clear_output_bucket():
 def upload_to_input_bucket_s3(path, name):
 	global input_bucket
 	s3 = boto3_client('s3')
-	s3.upload_file(path + name, input_bucket, name)
+	s3.upload_file(path + name, input_bucket, "raw/"+name)
 	
 	
 def upload_files(test_case):	
@@ -51,7 +51,7 @@ def upload_files(test_case):
 			
 	
 def workload_generator():
-	
+
 	print("Running Test Case 1")
 	upload_files("test_case_1")
 
@@ -59,9 +59,10 @@ def workload_generator():
 	upload_files("test_case_2")
 	
 
-# clear_input_bucket()
-clear_output_bucket()	
-workload_generator()	
 
+if __name__ == '__main__':
+	clear_input_bucket()
+	clear_output_bucket()
+	workload_generator()
 	
 

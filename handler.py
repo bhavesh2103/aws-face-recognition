@@ -1,3 +1,5 @@
+import json
+
 import face_recognition
 import pickle
 import os
@@ -12,6 +14,8 @@ input_bucket = "cc-ss-input-2"
 output_bucket = "cc-ss-output-2"
 s3 = boto3.client('s3')
 file_path = '/home/app/encoding'
+
+
 # file_path = 'encoding' #for local testing
 
 
@@ -52,11 +56,23 @@ def get_info_from_dynamo(name):
         return str(e)  # Return the error message if an exception occurs
 
 
-def upload_file_to_s3(video_file_name, name_of_person_detected, information_from_dynamo):
+def upload_file_to_s3(video_file_name, information_from_dynamo):
     # todo : create a file named video_file_name on s3
     # contents for this file will be , name of the person detected, and inforamation_from_dynamo (string/text)
     # check if file created successfully and return true if it does, else return false or raise error
-    pass
+
+    # Initialize the S3 client
+    s3 = boto3.client('s3')
+
+    # Specify your S3 bucket name and the object (file) name in S3
+    bucket_name = 'cc-ss-output-2'
+    object_name = video_file_name + ".json"
+    info_dict = dict(information_from_dynamo)
+    json_data = json.dumps(info_dict)
+
+    s3.put_object(Bucket=bucket_name, Key=object_name, Body=json_data)
+
+    # Upload the file to S3
 
 
 def check_if_array_exists_in_list(array, arrays):
@@ -120,8 +136,8 @@ def face_recognition_handler(event, context):
                     f"First face detected for {key}! Name of the person identified is  : {name_of_person_detected}")
                 info_from_ddb = get_info_from_dynamo(name_of_person_detected)
                 print(info_from_ddb)
-                # call get info from ddb
-                # call upload to s3
+                upload_file_to_s3(key, info_from_ddb)
+
             else:
                 print(f"No faces detected for : {key}")
 
@@ -136,7 +152,6 @@ def face_recognition_handler(event, context):
         }
     except Exception as e:
         raise e
-
 
 # if __name__ == '__main__':
 #     event = {

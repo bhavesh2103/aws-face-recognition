@@ -6,6 +6,8 @@ import os
 import subprocess
 import boto3
 import logging
+import csv
+from io import StringIO
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -66,13 +68,19 @@ def upload_file_to_s3(video_file_name, information_from_dynamo):
 
     # Specify your S3 bucket name and the object (file) name in S3
     bucket_name = 'cc-ss-output-2'
-    object_name = video_file_name + ".json"
-    info_dict = dict(information_from_dynamo)
-    json_data = json.dumps(info_dict)
+    object_name = video_file_name.replace('.mp4', '') + ".csv"
+    
+    csv_data = StringIO()
+    fieldnames = information_from_dynamo[0].keys() if information_from_dynamo else []
+    fieldnames = [field for field in fieldnames if field != 'id']  # Exclude 'id' field
+    csv_writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
+    csv_writer.writeheader()
+    for row in information_from_dynamo:
+        filtered_row = {key: value for key, value in row.items() if key != 'id'}  # Exclude 'id' field
+        csv_writer.writerow(filtered_row)
 
-    s3.put_object(Bucket=bucket_name, Key=object_name, Body=json_data)
-
-    # Upload the file to S3
+    # Upload the CSV file to S3
+    s3.put_object(Bucket=bucket_name, Key=object_name, Body=csv_data.getvalue())
 
 
 def check_if_array_exists_in_list(array, arrays):

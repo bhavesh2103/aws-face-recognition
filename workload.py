@@ -30,7 +30,7 @@ def clear_output_bucket():
 def upload_to_input_bucket_s3(path, name):
 	global input_bucket
 	s3 = boto3_client('s3')
-	s3.upload_file(path + name, input_bucket, "raw/"+name)
+	s3.upload_file(path + name, input_bucket, name)
 	
 	
 def upload_files(test_case):	

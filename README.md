@@ -12,8 +12,8 @@
     access_key = 'AKIA4BR5QBAMDUC72SQX' secret_key = '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'
 
 ## S3 Buckets : 
-    1. Input bucket  : cc-ss-input-bucket
-    2. Output Bucket : cc-ss-output-bucket
+    1. Input bucket  : cc-ss-input-2
+    2. Output Bucket : cc-ss-output-2
 
 ## Steps to run the code from scratch :
 

@@ -42,7 +42,9 @@
         When creating the Lambda function, select the option to create it from a Container Image. This will allow you to use the Docker image you pushed to ECR.
     
     8. Set Up S3 Trigger for Lambda
-        After creating the Lambda function, add a trigger using the Lambda console. Configure the trigger to respond to events in the S3 Input Bucket created in step 4. This will initiate the face recognition process when a video is uploaded.
+        After creating the Lambda function, add a trigger using the Lambda console. 
+        Configure the trigger to respond to events in the S3 Input Bucket created in step 4. 
+        This will initiate the face recognition process when a video is uploaded.
     
     9. Monitor the Output
         Add a video file to the Input S3 bucket.

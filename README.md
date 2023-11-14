@@ -5,8 +5,6 @@
     2. Aishwariya Ranjan
     3. Abhijeet Dixit
 
-## AWS Credentials :
-    //REDACTED
 
 ## S3 Buckets : 
     1. Input bucket  : cc-ss-input-2

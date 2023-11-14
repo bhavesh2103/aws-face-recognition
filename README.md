@@ -6,10 +6,7 @@
     3. Abhijeet Dixit
 
 ## AWS Credentials :
-    1. from console 
-    account number : 827983923224 user: Aishwariya password: Aishwariya@1
-    2. for cli 
-    access_key = 'AKIA4BR5QBAMDUC72SQX' secret_key = '/ZSlcS3DyQkvFbj9VT9pX7icTKoeBHPOUmGLMuPG'
+    //REDACTED
 
 ## S3 Buckets : 
     1. Input bucket  : cc-ss-input-2
